@@ -5,16 +5,16 @@
  */
 package br.edu.ifpb.dao;
 
-import br.edu.ifpb.model.NoticiaEntity;
+import br.edu.ifpb.model.Noticia;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author Manu
  */
-public class DAONoticia extends DAO<NoticiaEntity>{
+public class DAONoticia extends DAO<Noticia>{
 
-    public DAONoticia(EntityManager context) {
+     public DAONoticia(EntityManager context) {
         super(context);
     }
     
@@ -22,7 +22,7 @@ public class DAONoticia extends DAO<NoticiaEntity>{
         
     }
 
-    public NoticiaEntity find(Class<NoticiaEntity> aClass, Long id) {
+    public Noticia find(Class<Noticia> aClass, Long id) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         //return super.find(id);
         return super.getManager().find(aClass, id);

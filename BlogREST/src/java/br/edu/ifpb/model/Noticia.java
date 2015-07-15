@@ -13,25 +13,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Manu
  */
 @Entity
-public class NoticiaEntity implements Serializable {
+@XmlRootElement
+public class Noticia implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    
     private String autor;
     private String titulo;
     private String conteudo;
     private String data;
     
-    public NoticiaEntity(){}
+    public Noticia(){}
     
-    public NoticiaEntity(String titulo, String autor, String conteudo){
+    public Noticia(String titulo, String autor, String conteudo){
         this.titulo = titulo;
         this.autor = autor;
         this.conteudo = conteudo;
@@ -40,6 +40,21 @@ public class NoticiaEntity implements Serializable {
 	this.data = dateFormat.format(cal.getTime());
         
     }
+    
+    public Noticia(Long id,String titulo, String autor, String conteudo){
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.conteudo = conteudo;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	Calendar cal = Calendar.getInstance();
+	this.data = dateFormat.format(cal.getTime());
+        
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     public Long getId() {
         return id;
@@ -47,6 +62,26 @@ public class NoticiaEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Noticia)) {
+            return false;
+        }
+        Noticia other = (Noticia) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 
     public String getAutor() {
@@ -74,40 +109,28 @@ public class NoticiaEntity implements Serializable {
     }
 
     public String getData() {
+        
         return data;
     }
 
     public void setData(String data) {
-        this.data = data;
-    }
-    
-    
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof NoticiaEntity)) {
-            return false;
-        }
-        NoticiaEntity other = (NoticiaEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	Calendar cal = Calendar.getInstance();
+	this.data = dateFormat.format(data);
+        
     }
 
     @Override
     public String toString() {
-        return "NoticiaEntity{" + "id=" + id + ", autor=" + autor + ", titulo=" + titulo + ", conteudo=" + conteudo + ", data=" + data + '}';
+        return "Noticia{" + "autor=" + autor + ", titulo=" + titulo + ", conteudo=" + conteudo + ", data=" + data + ", id=" + id + '}';
     }
+    
+    
+    
+    
 
    
+
+    
     
 }
