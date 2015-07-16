@@ -22,6 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 /**
  * REST Web Service
@@ -52,56 +53,33 @@ public class GerenciadorNoticias {
 
    
     @GET
-    @Path("/listar")
-    public Response listarNoticias(){//@PathParam("id")Long id //@PathParam("id")Long id@QueryParam("id") String id, @QueryParam("formato")String formato
-        
-        String resposta = "";
-        
-        if(noticias.size() == 0)
-            resposta += "Nao possui noticias cadastradas!";
-        else{
-            
-            for(Noticia n : noticias){
-                resposta += n.toString();
-            }
-        }
-        
-        return Response.ok(resposta,MediaType.APPLICATION_JSON).build();
-    }
-    
-  
-    
-    @GET
-    //@Path("{id}")
     @Produces("application/json")
-    public Response getNoticia(@QueryParam("id")Long id){ //@PathParam("id")Long id@QueryParam("id") String id, @QueryParam("formato")String formato
+    public Response getNoticia(@QueryParam("id")Long id){
         dao.open();
         dao.begin();
         
         Noticia n = dao.find(Noticia.class, id);
-        if(n.getAutor() != null){
+        if(n != null){
             dao.close();
             return Response.ok(n, MediaType.APPLICATION_JSON).build();
-            
-        }else{
+        }
+        else{
             dao.close();
             return Response.status(Response.Status.NOT_FOUND).build();
             
         }
-            
-        
     }
    
     @POST
     @Consumes("application/xml")
-    public Response criarNoticia(Noticia noticia) {
+    public Response create(Noticia noticia) {
         
         dao.open();
         dao.begin();
         Noticia exist = dao.find(noticia.getId());
         if(exist != null){
             dao.close();
-            return Response.ok("A noticia ja existe").build();
+            return Response.status(Status.CONFLICT).build();
         }
             
         Noticia n = new Noticia(noticia.getId(),noticia.getAutor(), noticia.getTitulo(), noticia.getConteudo());
@@ -111,7 +89,7 @@ public class GerenciadorNoticias {
         dao.close();
 
        
-        return Response.ok("pegou"+noticia.toString()).build();
+        return Response.ok("Noticia Cadastrada com Sucesso - "+noticia.toString()).build();
     }
     
     
@@ -120,7 +98,7 @@ public class GerenciadorNoticias {
     
     @Path("{id}")
     @Produces("application/xml")
-    public Response remove(@PathParam("id")Long id){//@QueryParam
+    public Response remove(@PathParam("id")Long id){
     
       
         dao.open();
@@ -129,7 +107,6 @@ public class GerenciadorNoticias {
    
         if (n==null){
             dao.close();
-            //return Response.ok(n,MediaType.APPLICATION_JSON+"teste").build(); 
             return Response.status(Response.Status.NOT_FOUND).build();
         }
             
@@ -144,7 +121,7 @@ public class GerenciadorNoticias {
     @PUT
     @Produces("application/json")
     @Path("{id}/{titulo}")
-    public Response atualizar(@PathParam("id") Long id,@PathParam("titulo")String titulo) { 
+    public Response update(@PathParam("id") Long id,@PathParam("titulo")String titulo) { 
         dao.open();
         dao.begin();
         Noticia n = dao.find(id); 

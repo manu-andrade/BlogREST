@@ -122,7 +122,7 @@ public class Noticia implements Serializable {
 
     @Override
     public String toString() {
-        return "Noticia{" + "autor=" + autor + ", titulo=" + titulo + ", conteudo=" + conteudo + ", data=" + data + ", id=" + id + '}';
+        return "Noticia{" + "Autor:" + autor + ", Titulo: " + titulo + ", Conteudo: " + conteudo + ", Data: " + data + ", Id: " + id + '}';
     }
     
     
